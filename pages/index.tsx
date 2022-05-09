@@ -13,11 +13,11 @@ import Container from "@mui/material/Container";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 
-import { useAppDispatch, useAppSelector } from "../src/store/hooks";
-import {
-  selectMineSweeperMap,
-  updateMineSweeperMap,
-} from "../src/features/mineSweeperMap/mineSweeperMapSlice";
+// import { useAppDispatch, useAppSelector } from "../src/store/hooks";
+// import {
+//   selectMineSweeperMap,
+//   updateMineSweeperMap,
+// } from "../src/features/mineSweeperMap/mineSweeperMapSlice";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -37,8 +37,8 @@ const Home: NextPage = () => {
   const [message, setMessage] = useState("");
   const [boxDisabled, setBoxDisabled] = useState(false);
 
-  const dispatch = useAppDispatch();
-  const mineSweeperMapSelector = useAppSelector(selectMineSweeperMap);
+  // const dispatch = useAppDispatch();
+  // const mineSweeperMapSelector = useAppSelector(selectMineSweeperMap);
 
   const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);
 
@@ -51,13 +51,13 @@ const Home: NextPage = () => {
           .splice(1, lastMessage.data.split("\n").length - 2)
           .map((rows: any) => rows.split(""))
       );
-      dispatch({
-        type: "",
-        payload: mineSweeperMap,
-      });
+      // dispatch({
+      //   type: "",
+      //   payload: mineSweeperMap,
+      // });
 
-      console.log(mineSweeperMap);
-      console.log(mineSweeperMapSelector);
+      // console.log(mineSweeperMap);
+      // console.log(mineSweeperMapSelector);
     }
   }, [lastMessage, setMessageHistory]);
 
