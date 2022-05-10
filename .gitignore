@@ -15,11 +15,6 @@
 # production
 /build
 
-# redux
-
-/src/features/
-/src/store/
-
 # misc
 .DS_Store
 *.pem

@@ -33,8 +33,6 @@ export default function BasicSelect({ level, updateLevel }: Props) {
         >
           <MenuItem value={1}>Easy</MenuItem>
           <MenuItem value={2}>Medium</MenuItem>
-          <MenuItem value={3}>Hard</MenuItem>
-          <MenuItem value={4}>Expert</MenuItem>
         </Select>
       </FormControl>
     </Box>
