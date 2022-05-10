@@ -8,6 +8,7 @@ import styles from "../styles/Home.module.css";
 
 import BasicSelect from "../src/components/BasicSelect";
 import BoxSx from "../src/components/BoxSx";
+import CustomListItem from "../src/components/CustomListItem";
 
 import Grid from "@mui/material/Grid";
 import { Button, Typography } from "@mui/material";
@@ -26,7 +27,13 @@ import {
   updatemessageHistory,
   deletemessageHistory,
 } from "../src/features/messageHistory/messageHistorySlice";
-import CustomListItem from "../src/components/CustomListItem";
+
+import { updateLevel, selectLevel } from "../src/features/level/levelSlice";
+
+import {
+  updateMessage,
+  selectMessage,
+} from "../src/features/message/messageSlice";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -42,8 +49,8 @@ const Home: NextPage = () => {
   );
   const messageHistory = useAppSelector(selectMessageHistory);
   const mineSweeperMap = useAppSelector(selectMineSweeperMap);
-  const [level, setLevel] = useState("1");
-  const [message, setMessage] = useState("");
+  const level = useAppSelector(selectLevel);
+  const message = useAppSelector(selectMessage);
   const [boxDisabled, setBoxDisabled] = useState(false);
 
   const dispatch = useAppDispatch();
@@ -52,7 +59,7 @@ const Home: NextPage = () => {
     share: true,
     onOpen: () => console.log("Connection opened"),
     shouldReconnect: (closeEvent) => true,
-    onClose: () => console.log("Closed"),
+    onClose: () => console.log("Connection Closed"),
   });
 
   useEffect(() => {
@@ -71,7 +78,7 @@ const Home: NextPage = () => {
       if (message?.data === "open: You lose") {
         setBoxDisabled(true);
         dispatch(deletemessageHistory([]));
-        setMessage("You Lose");
+        dispatch(updateMessage("You Lose"));
       }
     });
   }, [lastMessage]);
@@ -79,14 +86,14 @@ const Home: NextPage = () => {
   const startGame = (level: string) => {
     dispatch(deletemessageHistory([]));
     setBoxDisabled(false);
-    setMessage("");
+    dispatch(updateMessage(""));
     sendMessage(`new ${level}`);
     sendMessage("map");
   };
 
   const resetGame = (level: string) => {
     dispatch(deletemessageHistory([]));
-    setMessage("");
+    dispatch(updateMessage(""));
     setBoxDisabled(false);
     sendMessage(`new ${level}`);
     sendMessage("map");
@@ -100,8 +107,8 @@ const Home: NextPage = () => {
     [ReadyState.UNINSTANTIATED]: "Uninstantiated",
   }[readyState];
 
-  const updateLevel = (level: string): void => {
-    setLevel(level);
+  const updateMapLevel = (level: string): void => {
+    dispatch(updateLevel(level));
   };
 
   const mineClicker = (sIndex: Number, index: Number): void => {
@@ -134,7 +141,7 @@ const Home: NextPage = () => {
           <Grid item xs={12} sx={{ mx: "auto" }} justifyContent="center">
             <Grid container>
               <Item sx={{ p: 0, m: 0 }}>
-                <BasicSelect level={level} updateLevel={updateLevel} />
+                <BasicSelect level={level} updateLevel={updateMapLevel} />
               </Item>
             </Grid>
           </Grid>
